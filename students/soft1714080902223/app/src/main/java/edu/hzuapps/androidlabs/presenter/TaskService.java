@@ -1,6 +1,7 @@
 package edu.hzuapps.androidlabs.presenter;
 
 import android.util.ArrayMap;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -13,6 +14,7 @@ import edu.hzuapps.androidlabs.dao.TaskDao;
 import edu.hzuapps.androidlabs.listview.HomeListAdapter;
 import edu.hzuapps.androidlabs.model.Task;
 import edu.hzuapps.androidlabs.soft1714080902223.MyApplication;
+import edu.hzuapps.androidlabs.soft1714080902223.NotificationUtils;
 import edu.hzuapps.androidlabs.soft1714080902223.R;
 
 
@@ -77,6 +79,9 @@ public enum  TaskService {
         else {
             Task task = taskDao.findById(id);
             taskList.add(0, task);
+            //如果任务没完成，加入提醒列表
+            if(task.getFinish() == 0)
+                TaskNotify(task);
         }
         homeListAdapter.notifyChange();
     }
@@ -113,6 +118,9 @@ public enum  TaskService {
             task.setContent(context);
             task.setTitle(title);
             task.setLastTime(lastTime);
+            //如果任务没完成，加入提醒
+            if(task.getFinish() == 0)
+                TaskNotify(task);
             taskList.set(position, task);
             taskDao.update(title, context, lastTime, task.getId());
         }
@@ -181,6 +189,9 @@ public enum  TaskService {
             task = taskList.get(position);
             taskDao.update(null, null, null, finish, task.getId());
             homeListAdapter.notifyChange();
+            if(finish == 1){
+                cancelNotify(task);
+            }
         }
     }
 
@@ -239,5 +250,24 @@ public enum  TaskService {
         return result;
     }
 
+
+    private void TaskNotify(Task task){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        long timeTemp = 0;
+        try {
+            timeTemp = simpleDateFormat.parse(task.getLastTime()).getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (timeTemp != 0) {
+            NotificationUtils notificationUtils = new NotificationUtils(MyApplication.getContext());
+            notificationUtils.notifyy(task.getTitle(), task.getContent(), timeTemp, task.getId());
+        }
+    }
+
+    private void cancelNotify(Task task){
+        NotificationUtils notificationUtils = new NotificationUtils(MyApplication.getContext());
+        notificationUtils.cancelNotify(task.getId());
+    }
 
 }

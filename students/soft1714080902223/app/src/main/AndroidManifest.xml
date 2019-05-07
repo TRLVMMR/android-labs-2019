@@ -26,8 +26,19 @@
             android:label="@string/page_edit">
 
         </activity>
+        <service android:name="edu.hzuapps.androidlabs.service.NofyService"></service>
+
+        <!--随着安卓系统启动而启动-->
+        <receiver android:name=".MyBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
+
+    <!-- 开机自启广播权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

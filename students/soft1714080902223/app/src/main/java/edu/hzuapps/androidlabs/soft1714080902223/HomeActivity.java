@@ -1,8 +1,14 @@
 package edu.hzuapps.androidlabs.soft1714080902223;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -34,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, EditActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -59,6 +64,26 @@ public class HomeActivity extends AppCompatActivity {
         if(NetworkService.isNetworkAvailable(this)) {
             setJson();
         }
+//        MyBroadcastReceiver myBroadcastReceiver = new MyBroadcastReceiver();
+//        myBroadcastReceiver.onReceive(this, new Intent());
+//        NotificationChannel channel = new NotificationChannel("3", "123", NotificationManager.IMPORTANCE_LOW);
+//         Notification notification = new Notification.Builder(getApplicationContext(), "3")
+//                .setContentTitle("事件提醒")
+//                .setContentText("有事件")
+//                 .setSmallIcon(R.drawable.ic_network_check_black_24dp)
+//                 .setAutoCancel(true)
+//                // 向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合：
+//                .setDefaults( Notification.DEFAULT_VIBRATE | Notification.DEFAULT_ALL | Notification.DEFAULT_SOUND )
+//                .build();
+        Log.v("aaa", "----------------------");
+
+//        if(channel == null)
+//            Log.v("null", "-----------null-----------");
+//        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        mNotificationManager.createNotificationChannel(channel);
+//        mNotificationManager.notify(3, notification);
+        //mNotificationManager.cancel(3);
+
 
     }
 
